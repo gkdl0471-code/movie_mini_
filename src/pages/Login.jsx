@@ -120,7 +120,7 @@ const handleSocialLogin = async (provider) => {
         >
           <img
             className="snsimg"
-            src="/src/assets/google.png"
+            src="/img/google.png"
           />
           <p>구글 로그인</p>
         </div>
@@ -132,7 +132,7 @@ const handleSocialLogin = async (provider) => {
         >
           <img 
             className="snsimg"
-            src="/src/assets/kakao.png"
+            src="/img/kakao.png"
           />
           <p>카카오 로그인</p>
         </div>
