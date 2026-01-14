@@ -1,0 +1,58 @@
+.findEmailPage {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  padding: 32px 50px;
+  color: #8d8989;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.findEmailBox {
+  background-color: #faf9fa;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  color: #2d3237;
+  width: 500px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.findEmailBox h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.findEmailBox p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.findEmailBox input {
+  background-color: #f0efef;
+  border-radius: 7px;
+  margin-bottom: 12px;
+  padding: 10px;
+  width: 100%;
+}
+
+.findEmailBox button {
+  background: linear-gradient(135deg, #fb7185, #f97316);
+  border-radius: 7px;
+  padding: 10px;
+  width: 100%;
+  color: #eee;
+  margin-top: 10px;
+}
+
+.findEmail-footer {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+}

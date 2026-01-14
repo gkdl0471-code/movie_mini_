@@ -35,6 +35,8 @@ export default function Detail({ posterURL }) {
   const error = useSelector(selectMovieError);
   const movie = useSelector(selectMovieById(movieId));
 
+  const handleCGVBooking = () => {window.open("https://cgv.co.kr/cnm/movieBook/movie/")};
+
   if (loading) {
     return <div className="detail-page">상세 정보 로딩 중...</div>;
   }
@@ -111,6 +113,15 @@ export default function Detail({ posterURL }) {
               <p className="detail-page__overview">
                 {movie.overview || "등록된 줄거리가 없습니다."}
               </p>
+            </div>
+            <div className="detail-page__actions">
+              <button
+                type="button"
+                className="detail-page__cgv-button"
+                onClick={handleCGVBooking}
+              >
+                👉🏻 CGV에서 {movie.title} 예매하기
+              </button>
             </div>
           </div>
         </div>

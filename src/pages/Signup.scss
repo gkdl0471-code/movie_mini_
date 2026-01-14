@@ -1,0 +1,36 @@
+.signupPage {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signupBox {
+  width: 520px;
+  background: #faf9fa;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signupBox input,
+.signupBox select {
+  width: 70%;
+  margin: 6px;
+  padding: 10px;
+  border-radius: 7px;
+  background: #f0efef;
+}
+
+.signupBox button {
+  width: 70%;
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(135deg, #fb7185, #f97316);
+  color: #fff;
+  border-radius: 7px;
+}
