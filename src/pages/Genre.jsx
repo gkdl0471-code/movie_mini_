@@ -124,6 +124,7 @@ export default function Genre({ posterURL }) {
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
+              movieId={movie.id}
               title={movie.title}
               rating={movie.vote_average}
               posterUrl={posterURL + movie.poster_path}

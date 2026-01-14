@@ -1,6 +1,11 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { selectMovieById, selectMovieLoading, selectMovieError } from "../RTK/selector";
+import {
+  selectMovieById,
+  selectMovieLoading,
+  selectMovieError,
+} from "../RTK/selector";
+import { useMovieTrailer } from "../hooks/useMovieTrailer";
 import "./Detail.scss";
 
 const BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/w1280";
@@ -21,10 +26,8 @@ const GENRE_MAP = {
   9648: "미스터리",
   10749: "로맨스",
   878: "SF",
-  10770: "TV 영화",
   53: "스릴러",
   10752: "전쟁",
-  37: "서부",
 };
 
 export default function Detail({ posterURL }) {
@@ -35,39 +38,27 @@ export default function Detail({ posterURL }) {
   const error = useSelector(selectMovieError);
   const movie = useSelector(selectMovieById(movieId));
 
-  const handleCGVBooking = () => {window.open("https://cgv.co.kr/cnm/movieBook/movie/")};
+  const { trailerKey, loading: trailerLoading } =
+    useMovieTrailer(movieId);
 
-  if (loading) {
-    return <div className="detail-page">상세 정보 로딩 중...</div>;
-  }
-  if (error) {
-    return <div className="detail-page">에러: {error}</div>;
-  }
-  if (!movie) {
-    return <div className="detail-page">영화 정보를 찾을 수 없습니다.</div>;
-  }
+  if (loading) return <div className="detail-page">로딩 중...</div>;
+  if (error) return <div className="detail-page">에러: {error}</div>;
+  if (!movie) return <div className="detail-page">영화 정보 없음</div>;
 
   const rating = movie.vote_average
     ? movie.vote_average.toFixed(1)
-    : "정보 없음";
+    : "N/A";
 
   const backgroundImageUrl =
     movie.backdrop_path
       ? BACKDROP_BASE_URL + movie.backdrop_path
-      : movie.poster_path
-      ? posterURL + movie.poster_path
       : "";
 
   const posterImageUrl =
-    movie.poster_path
-      ? posterURL + movie.poster_path
-      : movie.backdrop_path
-      ? BACKDROP_BASE_URL + movie.backdrop_path
-      : "";
+    movie.poster_path ? posterURL + movie.poster_path : "";
 
-  const genres = movie.genre_ids?.map((id) => GENRE_MAP[id]).filter(Boolean) || [];
-
-  const releaseDate = movie.release_date || "정보 없음";
+  const genres =
+    movie.genre_ids?.map((id) => GENRE_MAP[id]).filter(Boolean) || [];
 
   return (
     <div className="detail-page">
@@ -81,48 +72,72 @@ export default function Detail({ posterURL }) {
 
       <div className="detail-page__content">
         <div className="detail-page__card">
-          {posterImageUrl && (
-            <div className="detail-page__poster-wrap">
-              <img
-                className="detail-page__poster"
-                src={posterImageUrl}
-                alt={movie.title}
-              />
-            </div>
-          )}
+          {/* 🔹 HEADER : 포스터 + 기본 정보 */}
+          <div className="detail-page__header">
+            {posterImageUrl && (
+              <div className="detail-page__poster-wrap">
+                <img
+                  src={posterImageUrl}
+                  alt={movie.title}
+                  className="detail-page__poster"
+                />
+              </div>
+            )}
 
-          <div className="detail-page__info">
-            <h1 className="detail-page__title">{movie.title}</h1>
+            <div className="detail-page__info">
+              <h1 className="detail-page__title">{movie.title}</h1>
 
-            <div className="detail-page__meta">
-              <span className="detail-page__rating">⭐ {rating}</span>
-
-              {genres.length > 0 && (
-                <span className="detail-page__genres">
-                  {genres.join(" · ")}
+              <div className="detail-page__meta">
+                <span className="detail-page__rating">⭐ {rating}</span>
+                {genres.length > 0 && (
+                  <span>{genres.join(" · ")}</span>
+                )}
+                <span>
+                  개봉일: {movie.release_date || "정보 없음"}
                 </span>
-              )}
+                <div className="detail-page__section">
+                  <h2 className="detail-page__section-title">줄거리</h2>
+                  <p className="detail-page__overview">
+                    {movie.overview || "등록된 줄거리가 없습니다."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              <span className="detail-page__release">
-                개봉일: {releaseDate}
-              </span>
-            </div>
+          <div className="detail-page__trailer-section">
+            <h2 className="detail-page__section-title">예고편</h2>
 
-            <div className="detail-page__section">
-              <h2 className="detail-page__section-title">줄거리</h2>
-              <p className="detail-page__overview">
-                {movie.overview || "등록된 줄거리가 없습니다."}
-              </p>
-            </div>
-            <div className="detail-page__actions">
-              <button
-                type="button"
-                className="detail-page__cgv-button"
-                onClick={handleCGVBooking}
-              >
-                👉🏻 CGV에서 {movie.title} 예매하기
-              </button>
-            </div>
+            {trailerLoading ? (
+              <div className="detail-page__no-trailer">
+                예고편 로딩 중...
+              </div>
+            ) : trailerKey ? (
+              <div className="detail-page__trailer-wrap">
+                <iframe
+                  src={`https://www.youtube.com/embed/${trailerKey}`}
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="Movie Trailer"
+                />
+              </div>
+            ) : (
+              <div className="detail-page__no-trailer">
+                🎬 예고편이 없습니다
+              </div>
+            )}
+          </div>
+
+
+          <div className="detail-page__actions">
+            <button
+              className="detail-page__cgv-button"
+              onClick={() =>
+                window.open("https://cgv.co.kr/cnm/movieBook/movie/")
+              }
+            >
+              👉 CGV에서 예매하기
+            </button>
           </div>
         </div>
       </div>

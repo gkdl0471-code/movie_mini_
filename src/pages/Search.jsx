@@ -37,12 +37,11 @@ export default function Search({ posterURL }) {
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
+              movieId={movie.id}
               title={movie.title}
               rating={movie.vote_average}
-              posterUrl={
-                movie.posterUrl || (posterURL + movie.poster_path)
-              }
-              onClick={() => handleCardClick(movie.id)}
+              posterUrl={posterURL + movie.poster_path}
+              onClick={() => navigate(`/detail/${movie.id}`)}
             />
           ))}
         </div>

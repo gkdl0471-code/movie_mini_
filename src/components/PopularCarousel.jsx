@@ -20,11 +20,10 @@ export default function PopularCarousel({ movies = [], posterURL, onClickCard })
             className="popular-carousel__slide"
           >
             <MovieCard
+              movieId={movie.id}
               title={movie.title}
               rating={movie.vote_average}
-              posterUrl={
-                movie.poster_path ? posterURL + movie.poster_path : ""
-              }
+              posterUrl={posterURL + movie.poster_path}
               onClick={() => onClickCard(movie.id)}
             />
           </SwiperSlide>
